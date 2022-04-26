@@ -1,3 +1,4 @@
+import { ElementSchemaRegistry } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 
 interface IModal{
@@ -19,6 +20,13 @@ this.modals.push({
   visible: false
 })
 }
+
+unregister(id: string){
+  this.modals = this.modals.filter(
+    element => element.id !== id
+  )
+}
+
 
   isModalOpen(id: string) : boolean {
     return !!this.modals.find(element => element.id === id)?.visible
