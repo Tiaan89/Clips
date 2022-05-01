@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-//import { formatWithOptions } from 'util';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'app-register',
@@ -13,8 +12,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 
 export class RegisterComponent {
   constructor(
-    private auth: AngularFireAuth,
-    private db: AngularFirestore
+  private auth: AuthService
     ) {}
 
   inSubmission = false
@@ -63,19 +61,8 @@ export class RegisterComponent {
     this.alertColor = 'blue'
     this.inSubmission = true
 
-    const{ email, password} = this.registerForm.value
-
     try{
-      const userCred = await this.auth.createUserWithEmailAndPassword(
-        email, password
-      )
-
-      await this.db.collection('users').add({
-        name: this.name.value,
-        email: this.email.value,
-        age: this.age.value,
-        phoneNumber: this.phoneNumber.value
-      })
+      await this.auth.createUser(this.registerForm.value)
     }catch(e){
       console.error(e)
 
