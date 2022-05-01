@@ -26,13 +26,22 @@ public async createUser(userData: IUser)
     const userCred = await this.auth.createUserWithEmailAndPassword(
     userData.email, userData.password
   )
+
+      if(!userCred.user){
+        throw new Error("User can not be found!")
+      }
+
 //to limit the data - add IUser and make the password optional in the model and add conditional statement in the createUser method.
-  await this.usersCollection.add(
+  await this.usersCollection.doc(userCred.user.uid).set(
     {
       name: userData.name,
       email: userData.email,
       age: userData.age,
       phoneNumber: userData.phoneNumber
+    })
+
+    await userCred.user.updateProfile({
+      displayName: userData.name
     })
   }
 }
