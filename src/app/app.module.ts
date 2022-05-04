@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { VideoModule } from './video/video.module';
 import { ClipComponent } from './clip/clip.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 
 @NgModule({
@@ -21,16 +22,18 @@ import { ClipComponent } from './clip/clip.component';
     NavComponent,
     HomeComponent,
     AboutComponent,
-    ClipComponent
+    ClipComponent,
+    NotFoundComponent
   ],
-  imports: [
+  imports: [ //Ensure the order of the imports are correct
     BrowserModule,
-    AppRoutingModule,
     UserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
-    VideoModule
+    VideoModule,
+    AppRoutingModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]
