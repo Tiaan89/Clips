@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { v4 as uuid } from 'uuid';
 
 @Component({
   selector: 'app-upload',
@@ -12,6 +14,10 @@ export class UploadComponent implements OnInit {
   isDragover = false
   file: File | null = null
   nextStep = false
+  showAlert = false
+  alertColor = 'blue'
+  alertMsg = 'Please wait while your clip is being uploaded.'
+  inSubmission = false
 
   title = new FormControl('', [
     Validators.required,
@@ -21,7 +27,7 @@ export class UploadComponent implements OnInit {
     title: this.title
   })
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private storage: AngularFireStorage) { }
 
   ngOnInit(): void {
   }
@@ -42,6 +48,14 @@ export class UploadComponent implements OnInit {
   }
 
   uploadFile() {
-    console.log('File Uploaded')
+    this.showAlert = true
+    this.alertColor = 'blue'
+    this.alertMsg = 'Please wait while your clip is being uploaded.'
+    this.inSubmission = true
+
+    const clipFileName = uuid()
+    const clipPath = `clips/${clipFileName}.mp4`
+
+    this.storage.upload(clipPath, this.file)
   }
 }
