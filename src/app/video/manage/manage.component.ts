@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { ClipService } from 'src/app/services/clip.service';
 import IClip from 'src/app/models/clip.model';
+import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
   selector: 'app-manage',
@@ -11,11 +12,13 @@ import IClip from 'src/app/models/clip.model';
 export class ManageComponent implements OnInit {
   videoOrder = '1'
   clips: IClip[] = []
+  activeClip: IClip | null = null
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private clipService: ClipService
+    private clipService: ClipService,
+    private modal: ModalService
     ) { }
 
   ngOnInit(): void {
@@ -45,4 +48,11 @@ export class ManageComponent implements OnInit {
     })
   }
 
+  openModal($event: Event, clip: IClip) {
+    $event.preventDefault()
+
+    this.activeClip = clip
+
+    this.modal.toggleModal('editClip')
+  }
 }
