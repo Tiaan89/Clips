@@ -7,10 +7,15 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./upload.component.css']
 })
 export class UploadComponent implements OnInit {
+  isDragover = false
 
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+  }
+
+  storeFile($event: Event) {
+    this.isDragover = false
   }
 
 }
