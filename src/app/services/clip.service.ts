@@ -3,8 +3,9 @@ import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QueryS
 import IClip from '../models/clip.model';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { switchMap, map } from 'rxjs';
-import { of } from 'rxjs';
+import { of, BehaviorSubject, combineLatest } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
+import { __values } from 'tslib';
 
 @Injectable({
   providedIn: 'root'
@@ -24,15 +25,23 @@ export class ClipService {
      return this.clipsCollection.add(data)
    }
 
-   getUserClips() {
-     return this.auth.user.pipe(
-      switchMap(user => {
+   getUserClips(sort$: BehaviorSubject<string>) {
+     return combineLatest([
+       this.auth.user,
+       sort$
+      ]).pipe(
+      switchMap(values => {
+        const [user, sort] = values
+
         if(!user) {
           return of([])
         }
 
         const query = this.clipsCollection.ref.where(
           'uid', '==', user.uid
+        ).orderBy(
+          'timestamp',
+          sort === '1' ? 'desc' : 'asc'
         )
 
         return query.get()
