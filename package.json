@@ -25,6 +25,7 @@
     "@types/video.js": "^7.3.39",
     "@videojs/themes": "^1.0.1",
     "ngx-mask": "^13.1.11",
+    "resolve-url": "^0.2.1",
     "rxjs": "~7.5.0",
     "source-map-resolve": "^0.6.0",
     "tslib": "^2.3.0",
